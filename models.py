@@ -9,7 +9,7 @@ class Concert(Base):
 
   id = Column(Integer,primary_key=True)
   band_id = Column(Integer,ForeignKey('bands.id'))
-  venue_id = Column(Integer,ForeignKey)('venues.id')
+  venue_id = Column(Integer,ForeignKey('venues.id'))
   date = Column(String)
 
   band = relationship("Band",back_populates="concerts")
@@ -24,26 +24,26 @@ class Concert(Base):
 class Band(Base):
     __tablename__= 'bands'
 
-    id = Column(Integer,primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(String)
     hometown = Column(String)
 
-    concerts = relationship("Concert",back_populates='band')
+    concerts = relationship("Concert", back_populates='band')
 
-    def play_in_venue(self,venue,date):
-      new_concert = Concert(band=self,venue=venue,date=date)
-      session.add(new_concert)
-      session.commit()
+    def play_in_venue(self, venue, date):
+        new_concert = Concert(band=self, venue=venue, date=date)
+        session.add(new_concert)
+        session.commit()
 
-    def all_instructions(self):
+    def all_introductions(self):  # Corrected method name
         return [concert.introduction() for concert in self.concerts]
     
     def venues(self):
         return [concert.venue for concert in self.concerts]
     
     @classmethod
-    def most_perfomances(cls):
-       return max(session.query(cls).all(),key=lambda b: len(b.concerts))
+    def most_performances(cls):
+        return max(session.query(cls).all(), key=lambda b: len(b.concerts))
 
 class Venue(Base):
    __tablename__ = 'venues'
