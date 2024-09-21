@@ -21,7 +21,7 @@ class Concert(Base):
   def introduction(self):
     return f"Hello {self.venue.city}!!! We are {self.band.name} and we're from {self.band.hometown}"
   
-  class Band(Base):
+class Band(Base):
     __tablename__= 'bands'
 
     id = Column(Integer,primary_key=True)
@@ -44,3 +44,21 @@ class Concert(Base):
     @classmethod
     def most_perfomances(cls):
        return max(session.query(cls).all(),key=lambda b: len(b.concerts))
+
+class Venue(Base):
+   __tablename__ = 'venues'
+
+   id = Column(Integer,primary_key=True)
+   name = Column(String)
+   city = Column(String)
+
+   concerts = relationship("Concert",back_populates="venue")
+
+   def concert_on(self,date):
+      return next((concert for concert in self.concerts if concert.date == date),None)
+   
+   def most_frequent_band(self):
+      band_count={}
+      for concert in self.concerts:
+         band_count[concert.band] = band_count.get(concert.band,0) + 1
+      return max(band_count,key=band_count.get)
