@@ -1,12 +1,6 @@
 from database import session
 from models import Band, Venue, Concert
 
-# Input your examples
-'''band_name = 'The Beatles'
-hometown = 'England'
-venue_name = 'Manchester stadium'
-city = 'Manchester'
-concert_date = '2024-09-21'''
 
 def add_concert(band_name, hometown, venue_name, city, concert_date):
     # Check if the band already exists
@@ -26,7 +20,8 @@ def add_concert(band_name, hometown, venue_name, city, concert_date):
     if not concert:
         concert = Concert(band=band, venue=venue, date=concert_date)
         session.add(concert)
-
+        
+#Input your own examples as shown below and they will be added to the database
 add_concert('The Beatles','England','Manchester Stadium','Manchester','2024-09-21')
 add_concert('Queen','England','Bedford Stadium','Bedford','2024-10-16')
 session.commit()
